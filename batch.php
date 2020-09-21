@@ -22,12 +22,7 @@ function iterDir($dir)
                 $out = $OUT_DIR . str_ireplace($IN_DIR, '', $dir) . '/';
                 @mkdir($out, 0777, true);
                 if (substr($f, -4) == 'luac') {
-                    $lua = file_get_contents($file);
-                    if (ord($lua[5]) == 0x01) {
-                        $lua = hex2bin('1B4C7561530019930D0A1A0A0404') . substr($lua, 0x0D);
-                    }
-                    file_put_contents('tmp.luac', $lua);
-                    passthru('java -jar ' . escapeshellarg($argv[1]) . ' --rawstring tmp.luac > ' . escapeshellarg($out . basename($f, 'c')));
+                    passthru('java -jar ' . escapeshellarg($argv[1]) . ' --rawstring ' . escapeshellarg($file) . ' > ' . escapeshellarg($out . basename($f, 'c')));
                 } else {
                     copy($file, $out . $f);
                 }
